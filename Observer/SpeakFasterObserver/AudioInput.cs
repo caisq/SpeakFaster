@@ -27,6 +27,7 @@ namespace SpeakFasterObserver
         private SpeechClient speechClient;
         private SpeechClient.StreamingRecognizeStream recogStream;
         private BufferedWaveProvider recogBuffer;
+        private float cummulativeRecogSeconds;
 
         public AudioInput(string dataDir) {
             this.dataDir = dataDir;
@@ -42,8 +43,28 @@ namespace SpeakFasterObserver
             if (isRecording)
             {
                 return;
+            }            
+            waveIn = new WaveIn
+            {
+                WaveFormat = new WaveFormat(AUDIO_SAMPLE_RATE_HZ, AUDIO_NUM_CHANNELS)
+            };
+            if (waveIn.WaveFormat.BitsPerSample != AUDIO_BITS_PER_SAMPLE)
+            {
+                // TODO(#64): Handle this exception add the app level.
+                throw new NotSupportedException(
+                    $"Expected wave-in bits per sample to be {AUDIO_BITS_PER_SAMPLE}, " +
+                    $"but got {waveIn.WaveFormat.BitsPerSample}");
             }
+            waveIn.DataAvailable += new EventHandler<WaveInEventArgs>(WaveDataAvailable);
+            recogBuffer = new BufferedWaveProvider(waveIn.WaveFormat);
             speechClient = SpeechClient.Create();
+            reInitStreamRecognizer();
+            waveIn.StartRecording();
+            isRecording = true;
+        }
+
+        private void reInitStreamRecognizer()
+        {
             recogStream = speechClient.StreamingRecognize();
             // recogStream.WriteCompleteAsync();
             Debug.WriteLine($"recogStream = {recogStream}");
@@ -71,26 +92,13 @@ namespace SpeakFasterObserver
                         foreach (var alternative in result.Alternatives)
                         {
                             saidWhat = alternative.Transcript;
-                            Debug.WriteLine($"Transcript: {saidWhat}");
+                            String timestamp = DateTime.Now.ToString();
+                            Debug.WriteLine($"Transcript: {timestamp}: {saidWhat}");
                         }
                     }
                 }
             });
-            waveIn = new WaveIn
-            {
-                WaveFormat = new WaveFormat(AUDIO_SAMPLE_RATE_HZ, AUDIO_NUM_CHANNELS)
-            };
-            if (waveIn.WaveFormat.BitsPerSample != AUDIO_BITS_PER_SAMPLE)
-            {
-                // TODO(#64): Handle this exception add the app level.
-                throw new NotSupportedException(
-                    $"Expected wave-in bits per sample to be {AUDIO_BITS_PER_SAMPLE}, " +
-                    $"but got {waveIn.WaveFormat.BitsPerSample}");
-            }
-            waveIn.DataAvailable += new EventHandler<WaveInEventArgs>(WaveDataAvailable);
-            recogBuffer = new BufferedWaveProvider(waveIn.WaveFormat);
-            waveIn.StartRecording();
-            isRecording = true;
+            cummulativeRecogSeconds = 0f;
         }
 
         /**
@@ -106,6 +114,7 @@ namespace SpeakFasterObserver
             }
             waveIn.StopRecording();
             MaybeEndCurrentFlacWriter();
+            recogStream.WriteCompleteAsync();
             isRecording = false;
         }
 
@@ -129,7 +138,13 @@ namespace SpeakFasterObserver
                 {
                     Debug.WriteLine($"Streaming recog exception: {ex.Message}");
                 }
+                cummulativeRecogSeconds += bufferedSeconds;
                 recogBuffer.ClearBuffer();
+                if (cummulativeRecogSeconds > 60 * 4)
+                {
+                    Debug.WriteLine("Reinitializing recognizer stream");
+                    reInitStreamRecognizer();
+                }
             }
 
             lock (flacLock)
