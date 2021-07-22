@@ -2,6 +2,12 @@
 using NAudio.Wave;
 using System;
 using System.IO;
+using System.Diagnostics;
+using System.Threading.Tasks;
+
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Language.V1;
+using Google.Cloud.Speech.V1;
 
 namespace SpeakFasterObserver
 {
@@ -10,6 +16,7 @@ namespace SpeakFasterObserver
         private static readonly int AUDIO_NUM_CHANNELS = 1;
         private static readonly int AUDIO_BITS_PER_SAMPLE = 16;
         private static readonly int AUDIO_SAMPLE_RATE_HZ = 16000;
+        private static readonly float RECOG_PERIOD_SECONDS = 2.0f;
 
         private readonly string dataDir;
         private WaveIn waveIn = null;
@@ -20,8 +27,47 @@ namespace SpeakFasterObserver
         private volatile bool isRecording = false;
         private static readonly object flacLock = new object();
 
+        private SpeechClient speechClient;
+        private SpeechClient.StreamingRecognizeStream recogStream;
+        private BufferedWaveProvider recogBuffer;
+
         public AudioInput(string dataDir) {
             this.dataDir = dataDir;
+
+            // TODO(cais): Move somewhere else.
+            speechClient = SpeechClient.Create();
+            recogStream = speechClient.StreamingRecognize();
+            // recogStream.WriteCompleteAsync();
+            Debug.WriteLine($"recogStream = {recogStream}");
+            recogStream.WriteAsync(new StreamingRecognizeRequest()
+            {
+                StreamingConfig = new StreamingRecognitionConfig()
+                {
+                    Config = new RecognitionConfig()
+                    {
+                        Encoding = RecognitionConfig.Types.AudioEncoding.Linear16,
+                        AudioChannelCount = 1,
+                        SampleRateHertz = AUDIO_SAMPLE_RATE_HZ,
+                        LanguageCode = "en-US",
+                    },
+                    SingleUtterance = false,
+                },
+            });
+            Task.Run(async () =>
+            {
+                string saidWhat = "";
+                while (await recogStream.GetResponseStream().MoveNextAsync())
+                {
+                    foreach (var result in recogStream.GetResponseStream().Current.Results)
+                    {
+                        foreach (var alternative in result.Alternatives)
+                        {
+                            saidWhat = alternative.Transcript;
+                            Debug.WriteLine($"Transcript: {saidWhat}");
+                        }
+                    }
+                }
+            });
         }
 
         /**
@@ -47,6 +93,7 @@ namespace SpeakFasterObserver
                     $"but got {waveIn.WaveFormat.BitsPerSample}");
             }
             waveIn.DataAvailable += new EventHandler<WaveInEventArgs>(WaveDataAvailable);
+            recogBuffer = new BufferedWaveProvider(waveIn.WaveFormat);
             waveIn.StartRecording();
             isRecording = true;
         }
@@ -69,6 +116,27 @@ namespace SpeakFasterObserver
 
         private void WaveDataAvailable(object sender, WaveInEventArgs e)
         {
+            recogBuffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
+            float bufferedSeconds = (float) recogBuffer.BufferedBytes / (AUDIO_BITS_PER_SAMPLE / 8) / AUDIO_SAMPLE_RATE_HZ;
+            if (bufferedSeconds > RECOG_PERIOD_SECONDS)
+            {
+                byte[] frameBuffer = new byte[recogBuffer.BufferedBytes];
+                int numBytes = recogBuffer.BufferedBytes;
+                recogBuffer.Read(frameBuffer, 0, numBytes);
+                try
+                {
+                    recogStream.WriteAsync(new StreamingRecognizeRequest()
+                    {
+                        AudioContent = Google.Protobuf.ByteString.CopyFrom(frameBuffer, 0, numBytes)
+                    });
+                } 
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Streaming recog exception: {ex.Message}");
+                }
+                recogBuffer.ClearBuffer();
+
+            }
             lock (flacLock)
             {
                 if (buffer == null || buffer.Length != e.Buffer.Length / 2)
