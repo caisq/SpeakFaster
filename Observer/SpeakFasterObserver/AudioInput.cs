@@ -2,8 +2,8 @@
 using Google.Cloud.Speech.V1;
 using NAudio.Wave;
 using System;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SpeakFasterObserver
