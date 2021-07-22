@@ -1,13 +1,10 @@
 ﻿using FlacBox;
+using Google.Cloud.Speech.V1;
 using NAudio.Wave;
 using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
-using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Language.V1;
-using Google.Cloud.Speech.V1;
 
 namespace SpeakFasterObserver
 {
@@ -33,8 +30,19 @@ namespace SpeakFasterObserver
 
         public AudioInput(string dataDir) {
             this.dataDir = dataDir;
+        }
 
-            // TODO(cais): Move somewhere else.
+        /**
+         * Start recording audio waveform from the built-in microphone.
+         * 
+         * Creates a new InProgress .flac file to save the data to.
+         */
+        public void StartRecordingFromMicrophone()
+        {
+            if (isRecording)
+            {
+                return;
+            }
             speechClient = SpeechClient.Create();
             recogStream = speechClient.StreamingRecognize();
             // recogStream.WriteCompleteAsync();
@@ -68,19 +76,6 @@ namespace SpeakFasterObserver
                     }
                 }
             });
-        }
-
-        /**
-         * Start recording audio waveform from the built-in microphone.
-         * 
-         * Creates a new InProgress .flac file to save the data to.
-         */
-        public void StartRecordingFromMicrophone()
-        {
-            if (isRecording)
-            {
-                return;
-            }
             waveIn = new WaveIn
             {
                 WaveFormat = new WaveFormat(AUDIO_SAMPLE_RATE_HZ, AUDIO_NUM_CHANNELS)
@@ -135,8 +130,8 @@ namespace SpeakFasterObserver
                     Debug.WriteLine($"Streaming recog exception: {ex.Message}");
                 }
                 recogBuffer.ClearBuffer();
-
             }
+
             lock (flacLock)
             {
                 if (buffer == null || buffer.Length != e.Buffer.Length / 2)
