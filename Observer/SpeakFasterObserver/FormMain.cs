@@ -7,6 +7,12 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Sleddog.Blink1;
+//using InTheHand.Net.Sockets;
+//using InTheHand.Bluetooth;
+using UniversalBeacon.Library.Core.Entities;
+using UniversalBeacon.Library.Core.Interfaces;
+using UniversalBeacon.Library;
+using Xamarin.Forms;
 
 namespace SpeakFasterObserver
 {
@@ -78,6 +84,31 @@ namespace SpeakFasterObserver
 
             Upload._dataDirectory = (dataPath);
             uploadTimer.Change(0, 60 * 1000);
+
+            //BluetoothClient client = new BluetoothClient();
+            //var devices = client.DiscoverDevicesInRange();
+            //foreach (var device in devices)
+            //{
+            //    Debug.WriteLine("Discovered Bluetooth device:" + device);
+            //}
+
+            // Based on: https://github.com/inthehand/32feet/blob/main/Samples/ConsoleBLETest/Program.cs
+            
+            DiscoverBluetoothDevices();
+        }
+
+        private async void DiscoverBluetoothDevices()
+        {
+            //var discoveredDevices = await Bluetooth.ScanForDevicesAsync();
+            //foreach (var device in discoveredDevices)
+            //{
+            //    Debug.WriteLine("Discovered: " + device);
+            //}
+            // See: https://github.com/andijakl/universal-beacon
+            //var provider = RootWork
+            //IBluetoothPacketProvider provider = new();
+            //IBluetoothPacketProvider provider = UniversalBeacon.Library.Core.Entities.
+            //BeaconManager manager = new(provider, Device.BeginInvokeOnMainThread);
         }
 
         #region Event Handlers
@@ -273,7 +304,7 @@ namespace SpeakFasterObserver
                 toggleButtonOnOff.Text = "Recording On";
                 if (blink1 != null)
                 {
-                    blink1.Blink(Color.Red, new TimeSpan(0, 0, 5), 10);
+                    blink1.Blink(System.Drawing.Color.Red, new TimeSpan(0, 0, 5), 10);
                 }
                 UpdateSessionManagerState();
             }

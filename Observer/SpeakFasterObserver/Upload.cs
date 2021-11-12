@@ -12,7 +12,8 @@ namespace SpeakFasterObserver
     internal class Upload
     {
         private const string SCHEMA_VERSION = "SPO-2105";
-        private const string BUCKET_NAME = "speak-faster";
+        // TODO(cais): Revert. DO NOT SUBMIT.
+        private const string BUCKET_NAME = "speak-faster-cais-test";
 
         private static readonly AmazonS3Client _client;
 
@@ -68,7 +69,7 @@ namespace SpeakFasterObserver
 
             Debug.Assert(_client != null);
             Debug.Assert(_dataDirectory != null);
-            Debug.Assert(_gazeDevice != null);
+            //Debug.Assert(_gazeDevice != null);
 
             if (_salt == null)
             {
