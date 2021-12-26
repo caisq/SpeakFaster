@@ -17,9 +17,9 @@ namespace SpeakFasterObserver
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //CefSharp.Wpf.ChromiumWebBrowser browser = new();
-            //mainGrid.Children.Add(browser);
-            //CefSharp.WinForms.ChromiumWebBrowser browser = new();
+            string webViewUrl = Environment.GetEnvironmentVariable("SPEAKFASTER_WEBVIEW_URL");
+            Debug.Assert(webViewUrl != null && webViewUrl != "");
+            TheBrowser.Load(webViewUrl);
         }
 
     }
