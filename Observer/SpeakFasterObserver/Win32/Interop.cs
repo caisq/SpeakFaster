@@ -64,5 +64,37 @@ namespace SpeakFasterObserver.Win32
 
         [DllImport("gdi32.dll")]
         public static extern int GetDIBits([In] IntPtr hdc, [In] IntPtr hbmp, uint uStartScan, uint cScanLines, [Out] byte[] lpvBits, ref BITMAPINFO lpbi, DIB_Color_Mode uUsage);
+
+        // Tobii Stream Engine interop begins.
+        //public const string stream_engine_dll = "tobii_stream_engine";
+
+        //// TODO(cais): Confirm. Do not submit.
+        //[DllImport(stream_engine_dll, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "tobii_get_device_name")]
+        //private static extern tobii_error_t tobii_get_device_name(IntPtr device, StringBuilder device_name);
     }
+
+    // Data types related to Tobii Stream Engine.
+    //public enum tobii_error_t
+    //{
+    //    TOBII_ERROR_NO_ERROR,
+    //    TOBII_ERROR_INTERNAL,
+    //    TOBII_ERROR_INSUFFICIENT_LICENSE,
+    //    TOBII_ERROR_NOT_SUPPORTED,
+    //    TOBII_ERROR_NOT_AVAILABLE,
+    //    TOBII_ERROR_CONNECTION_FAILED,
+    //    TOBII_ERROR_TIMED_OUT,
+    //    TOBII_ERROR_ALLOCATION_FAILED,
+    //    TOBII_ERROR_INVALID_PARAMETER,
+    //    TOBII_ERROR_CALIBRATION_ALREADY_STARTED,
+    //    TOBII_ERROR_CALIBRATION_NOT_STARTED,
+    //    TOBII_ERROR_ALREADY_SUBSCRIBED,
+    //    TOBII_ERROR_NOT_SUBSCRIBED,
+    //    TOBII_ERROR_OPERATION_FAILED,
+    //    TOBII_ERROR_CONFLICTING_API_INSTANCES,
+    //    TOBII_ERROR_CALIBRATION_BUSY,
+    //    TOBII_ERROR_CALLBACK_IN_PROGRESS,
+    //    TOBII_ERROR_TOO_MANY_SUBSCRIBERS,
+    //    TOBII_ERROR_CONNECTION_FAILED_DRIVER,
+    //    TOBII_ERROR_UNAUTHORIZED
+    //}
 }

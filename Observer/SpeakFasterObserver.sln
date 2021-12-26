@@ -7,26 +7,74 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeakFasterObserver", "Spea
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SpeakFasterObserver Decoder", "SpeakFasterObserver Decoder\SpeakFasterObserver Decoder.pyproj", "{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkLib", "..\..\Talk37\app\BasicKeyboard\Microsoft.Research.GazeInteraction\FrameworkLib\FrameworkLib.csproj", "{B0C5978F-35FC-4C5F-8355-E28A952D4047}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StandardLib", "..\..\Talk37\app\BasicKeyboard\Microsoft.Research.GazeInteraction\StandardLib\StandardLib.csproj", "{E1528373-2097-4C95-BB08-867F35E960E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameworkLib.Devices", "..\..\Talk37\app\BasicKeyboard\Microsoft.Research.GazeInteraction\FrameworkLib.Devices\FrameworkLib.Devices.csproj", "{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|x64.ActiveCfg = Debug|x64
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|x64.Build.0 = Debug|x64
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|x86.ActiveCfg = Debug|x86
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Debug|x86.Build.0 = Debug|x86
+		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|x64.ActiveCfg = Release|x64
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|x64.Build.0 = Release|x64
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|x86.ActiveCfg = Release|x86
 		{ECEDB902-2FAB-44A7-A824-B1725237E8DE}.Release|x86.Build.0 = Release|x86
+		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Release|x64.ActiveCfg = Release|Any CPU
 		{3752D2B0-C808-4F34-A82A-0E91F6F3E5EB}.Release|x86.ActiveCfg = Release|Any CPU
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Debug|x64.ActiveCfg = Debug|x64
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Debug|x64.Build.0 = Debug|x64
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Debug|x86.ActiveCfg = Debug|x86
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Debug|x86.Build.0 = Debug|x86
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Release|Any CPU.ActiveCfg = Release|x86
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Release|x64.ActiveCfg = Release|x64
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Release|x64.Build.0 = Release|x64
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Release|x86.ActiveCfg = Release|x86
+		{B0C5978F-35FC-4C5F-8355-E28A952D4047}.Release|x86.Build.0 = Release|x86
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|x64.Build.0 = Debug|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|x86.ActiveCfg = Debug|x86
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Debug|x86.Build.0 = Debug|x86
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|x64.ActiveCfg = Release|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|x64.Build.0 = Release|Any CPU
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|x86.ActiveCfg = Release|x86
+		{E1528373-2097-4C95-BB08-867F35E960E6}.Release|x86.Build.0 = Release|x86
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|x64.ActiveCfg = Debug|x64
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|x64.Build.0 = Debug|x64
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|x86.ActiveCfg = Debug|x86
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Debug|x86.Build.0 = Debug|x86
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|x64.ActiveCfg = Release|x64
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|x64.Build.0 = Release|x64
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|x86.ActiveCfg = Release|x86
+		{9DCF1C1D-A140-4EC0-AFE8-D46FFE679C32}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

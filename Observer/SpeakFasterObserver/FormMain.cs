@@ -11,7 +11,7 @@ namespace SpeakFasterObserver
 {
     public partial class FormMain : Form
     {
-        private readonly ToltTech.GazeInput.IGazeDevice gazeDevice;
+        //private readonly ToltTech.GazeInput.IGazeDevice gazeDevice;
 
         static string dataPath;
 
@@ -31,6 +31,8 @@ namespace SpeakFasterObserver
         System.Threading.Timer uploadTimer = new(Timer_Tick);
         static System.Threading.Timer keyloggerTimer = new((state) => { SaveKeypresses(); });
 
+        static WebView webView = new WebView();
+
         public FormMain()
         {
             InitializeComponent();
@@ -39,23 +41,23 @@ namespace SpeakFasterObserver
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "SpeakFasterObserver");
 
-            gazeDevice = new ToltTech.GazeInput.TobiiStreamEngine();
+            //gazeDevice = new ToltTech.GazeInput.TobiiStreamEngine();
             sessionManager = new(dataPath);
             audioInput = new();
 
-            if (!gazeDevice.IsAvailable)
-            {
-                gazeDevice.Dispose();
-                gazeDevice = null;
+            //if (!gazeDevice.IsAvailable)
+            //{
+            //    gazeDevice.Dispose();
+            //    gazeDevice = null;
 
-                screenCapture = new(null);
-            }
-            else
-            {
-                gazeDevice.Connect(new TraceSource("Null"));
-                screenCapture = new(gazeDevice);
-                Upload._gazeDevice = gazeDevice.Information;
-            }
+            //    screenCapture = new(null);
+            //}
+            //else
+            //{
+            //    gazeDevice.Connect(new TraceSource("Null"));
+            //    screenCapture = new(gazeDevice);
+            //    Upload._gazeDevice = gazeDevice.Information;
+            //}
 
             // Ensure output director exists
             if (!Directory.Exists(dataPath))
@@ -76,6 +78,13 @@ namespace SpeakFasterObserver
 
             Upload._dataDirectory = (dataPath);
             uploadTimer.Change(0, 60 * 1000);
+
+            Debug.WriteLine($"webView = {webView}");  // DEBUG
+            if (null == System.Windows.Application.Current)
+            {
+                new System.Windows.Application();
+            }
+            webView.Show();
         }
 
         #region Event Handlers
@@ -88,7 +97,7 @@ namespace SpeakFasterObserver
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            gazeDevice?.Dispose();
+            //gazeDevice?.Dispose();
         }
 
         private void btnAddStartupIcon_Click(object sender, EventArgs e)
@@ -144,7 +153,7 @@ namespace SpeakFasterObserver
                 audioInput.RotateFlacWriter();
                 audioInput.SetNewFlacPath(sessionManager.GetMicWavInFilePath());
             }
-
+            Debug.WriteLine($"Application.Current = {System.Windows.Application.Current}");  // DEBUG
             Upload.Timer_Tick(state);
         }
 
