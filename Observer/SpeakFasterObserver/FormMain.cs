@@ -83,6 +83,7 @@ namespace SpeakFasterObserver
             if (null == System.Windows.Application.Current)
             {
                 new System.Windows.Application();
+                System.Windows.Application.Current.MainWindow = webView;
             }
             webView.Show();
         }
@@ -91,6 +92,7 @@ namespace SpeakFasterObserver
         private void FormMain_Load(object sender, EventArgs e)
         {
             Hide();
+            //Show();
 
             SetRecordingState(isRecording, isRecordingScreenshots, isRecordingMicWaveIn);
         }
