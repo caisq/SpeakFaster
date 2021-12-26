@@ -1,5 +1,4 @@
-﻿using CefSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,6 +13,13 @@ namespace SpeakFasterObserver
         public WebView()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //CefSharp.Wpf.ChromiumWebBrowser browser = new();
+            //mainGrid.Children.Add(browser);
+            //CefSharp.WinForms.ChromiumWebBrowser browser = new();
         }
 
     }

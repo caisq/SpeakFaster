@@ -50,6 +50,7 @@
     <PackageReference Include="AWSSDK.Core" Version="3.7.0.17" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.0.18" />
     <PackageReference Include="CefSharp.Common" Version="96.0.180" />
+    <PackageReference Include="CefSharp.WinForms" Version="96.0.180" />
     <PackageReference Include="CefSharp.Wpf" Version="96.0.180" />
     <PackageReference Include="FlacBox" Version="1.0.1" />
     <PackageReference Include="Google.Cloud.Speech.V1" Version="2.3.0" />
@@ -67,9 +68,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="ToltTech.TobiiStreamEngine">
+    <!-- <Reference Include="ToltTech.TobiiStreamEngine">
       <HintPath>..\External\ToltTech.TobiiStreamEngine.dll</HintPath>
-    </Reference>
+    </Reference> -->
   </ItemGroup>
 
   <ItemGroup>

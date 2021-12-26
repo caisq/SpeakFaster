@@ -11,8 +11,6 @@ namespace SpeakFasterObserver
 {
     public partial class FormMain : Form
     {
-        //private readonly ToltTech.GazeInput.IGazeDevice gazeDevice;
-
         static string dataPath;
 
         static KeyPresses keypresses = new();
@@ -24,7 +22,7 @@ namespace SpeakFasterObserver
         static bool tobiiComputerControlRunning = false;
         static SessionManager sessionManager;
         static AudioInput audioInput;
-        static ScreenCapture screenCapture;
+        static ScreenCapture screenCapture = new();
         private static string lastKeypressString = String.Empty;
         Keylogger keylogger;
 
@@ -44,22 +42,13 @@ namespace SpeakFasterObserver
             //gazeDevice = new ToltTech.GazeInput.TobiiStreamEngine();
             sessionManager = new(dataPath);
             audioInput = new();
+            string gazeDeviceName = GetGazeDeviceName();
+            if (gazeDeviceName != null)
+            {
+                Upload._gazeDevice = gazeDeviceName;
+            }
 
-            //if (!gazeDevice.IsAvailable)
-            //{
-            //    gazeDevice.Dispose();
-            //    gazeDevice = null;
-
-            //    screenCapture = new(null);
-            //}
-            //else
-            //{
-            //    gazeDevice.Connect(new TraceSource("Null"));
-            //    screenCapture = new(gazeDevice);
-            //    Upload._gazeDevice = gazeDevice.Information;
-            //}
-
-            // Ensure output director exists
+            //Ensure output directory exists
             if (!Directory.Exists(dataPath))
             {
                 Directory.CreateDirectory(dataPath);
@@ -79,6 +68,8 @@ namespace SpeakFasterObserver
             Upload._dataDirectory = (dataPath);
             uploadTimer.Change(0, 60 * 1000);
 
+            //CefSharp.WinForms.ChromiumWebBrowser browser = new CefSharp.WinForms.ChromiumWebBrowser();
+
             Debug.WriteLine($"webView = {webView}");  // DEBUG
             if (null == System.Windows.Application.Current)
             {
@@ -86,6 +77,30 @@ namespace SpeakFasterObserver
                 System.Windows.Application.Current.MainWindow = webView;
             }
             webView.Show();
+        }
+
+        private string GetGazeDeviceName()
+        {
+            Check(Tobii.StreamEngine.Interop.tobii_api_create(out var apiContext, null));
+            Check(Tobii.StreamEngine.Interop.tobii_enumerate_local_device_urls(apiContext, out var urls));
+            if (urls.Count == 0)
+            {
+                return null;
+            }
+            Check(Tobii.StreamEngine.Interop.tobii_device_create(apiContext, urls[0],
+                Tobii.StreamEngine.Interop.tobii_field_of_use_t.TOBII_FIELD_OF_USE_INTERACTIVE,
+                out IntPtr deviceContext));
+            Tobii.StreamEngine.tobii_device_info_t deviceInfo = new();
+            Check(Tobii.StreamEngine.Interop.tobii_get_device_info(deviceContext, out deviceInfo));
+            return $"Tobii {deviceInfo.model} {deviceInfo.generation} {deviceInfo.firmware_version}";
+        }
+
+        private void Check(Tobii.StreamEngine.tobii_error_t error)
+        {
+            if (error != Tobii.StreamEngine.tobii_error_t.TOBII_ERROR_NO_ERROR)
+            {
+                throw new Exception(error.ToString());
+            }
         }
 
         #region Event Handlers

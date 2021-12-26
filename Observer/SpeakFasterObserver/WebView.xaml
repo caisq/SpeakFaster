@@ -9,9 +9,10 @@
         gaze:GazeInput.Interaction="Enabled"
         Title="WebView"
         Height="450"
-        Width="800">
-    <Grid>
-
+        Width="800"
+        Loaded="Window_Loaded">
+    <Grid Name="mainGrid">
+        <!--<cef:ChromiumWebBrowser x:Name="TheBrowser" />-->
         <Button x:Name="DrawCircleButton" Height="80" Width="240"   
             Content="Draw Circle" >
         </Button>

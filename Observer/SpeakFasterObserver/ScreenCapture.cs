@@ -1,4 +1,4 @@
-using CefSharp;
+//using CefSharp;
 using SpeakFasterObserver.Win32;
 using System;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using ToltTech.GazeInput;
+//using ToltTech.GazeInput;
 using TurboJpegWrapper;
 
 namespace SpeakFasterObserver
@@ -18,12 +18,14 @@ namespace SpeakFasterObserver
         private static readonly TJCompressor compressor = new();
 
         private static readonly Brush gazeCursorBrush = new SolidBrush(Color.FromArgb(128, 255, 0, 0));
-        private readonly IGazeDevice _gazeDevice;
+        //private readonly IGazeDevice _gazeDevice;
 
-        public ScreenCapture(IGazeDevice gazeDevice)
-        {
-            _gazeDevice = gazeDevice;
-        }
+        public ScreenCapture() {}
+
+        //public ScreenCapture(IGazeDevice gazeDevice)
+        //{
+        //    //_gazeDevice = gazeDevice;
+        //}
 
         public Bitmap CaptureRegion(Rectangle region)
         {
@@ -134,18 +136,18 @@ namespace SpeakFasterObserver
 
         private void OverlayGazeCursor(Bitmap bitmap)
         {
-            if (_gazeDevice != null && _gazeDevice.LastGazePoint != null)
-            {
-                var gazePoint = _gazeDevice.LastGazePoint;
-                if (gazePoint != null && _gazeDevice.LastGazePoint.HasValue)
-                {
-                    using (var graphics = Graphics.FromImage(bitmap))
-                    {
-                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                        graphics.FillEllipse(gazeCursorBrush, (int)(gazePoint.Value.X), (int)gazePoint.Value.Y, 50, 50);
-                    }
-                }
-            }
+            //if (_gazeDevice != null && _gazeDevice.LastGazePoint != null)
+            //{
+            //    var gazePoint = _gazeDevice.LastGazePoint;
+            //    if (gazePoint != null && _gazeDevice.LastGazePoint.HasValue)
+            //    {
+            //        using (var graphics = Graphics.FromImage(bitmap))
+            //        {
+            //            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            //            graphics.FillEllipse(gazeCursorBrush, (int)(gazePoint.Value.X), (int)gazePoint.Value.Y, 50, 50);
+            //        }
+            //    }
+            //}
         }
 
         public void Capture(string path, string timestamp)
