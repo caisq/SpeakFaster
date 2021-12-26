@@ -68,8 +68,6 @@ namespace SpeakFasterObserver
             Upload._dataDirectory = (dataPath);
             uploadTimer.Change(0, 60 * 1000);
 
-            //CefSharp.WinForms.ChromiumWebBrowser browser = new CefSharp.WinForms.ChromiumWebBrowser();
-
             Debug.WriteLine($"webView = {webView}");  // DEBUG
             if (null == System.Windows.Application.Current)
             {

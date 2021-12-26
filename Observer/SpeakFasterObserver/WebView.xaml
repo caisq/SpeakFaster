@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpeakFasterObserver"
+        xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         xmlns:gaze="clr-namespace:Microsoft.Toolkit.Uwp.Input.GazeInteraction;assembly=FrameworkLib"
         gaze:GazeInput.Interaction="Enabled"
@@ -12,7 +13,7 @@
         Width="800"
         Loaded="Window_Loaded">
     <Grid Name="mainGrid">
-        <!--<cef:ChromiumWebBrowser x:Name="TheBrowser" />-->
+        <cef:ChromiumWebBrowser x:Name="TheBrowser" />
         <Button x:Name="DrawCircleButton" Height="80" Width="240"   
             Content="Draw Circle" >
         </Button>
